@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kurie — Apno Ka Khayal, Apno Ki Tarah</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --saffron: #E8920A;
+    --saffron-light: #FEF3E2;
+    --saffron-mid: #FDE68A;
+    --bg: #FAFAF8;
+    --surface: #FFFFFF;
+    --card: #F5F4F0;
+    --text: #111111;
+    --text2: #444444;
+    --muted: #888888;
+    --border: rgba(0,0,0,0.08);
+    --border2: rgba(0,0,0,0.12);
+    --radius: 16px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: var(--text);
+    text-transform: uppercase;
+  }
+
+  .logo span { color: var(--saffron); }
+
+  nav ul {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+    align-items: center;
+  }
+
+  nav ul a {
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  nav ul a:hover { color: var(--text); }
+
+  .nav-cta {
+    background: var(--saffron) !important;
+    color: #fff !important;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 600 !important;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 80px;
+    overflow: hidden;
+  }
+
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.15) 0%,
+      rgba(0,0,0,0.25) 40%,
+      rgba(0,0,0,0.65) 70%,
+      rgba(10,10,10,0.92) 100%
+    );
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 48px;
+    max-width: 860px;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--saffron);
+    margin-bottom: 14px;
+  }
+
+  .hero-title {
+    font-size: clamp(38px, 6vw, 74px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .hero-title .accent {
+    color: var(--saffron);
+    display: block;
+  }
+
+  .hero-sub {
+    font-size: clamp(14px, 1.8vw, 17px);
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 36px;
+    max-width: 460px;
+    line-height: 1.65;
+  }
+
+  /* BOOKING BAR */
+  .booking-bar {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 60px;
+    padding: 8px 8px 8px 24px;
+    max-width: 520px;
+    gap: 12px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+  }
+
+  .booking-field {
+    flex: 1;
+  }
+
+  .booking-field label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #555;
+  }
+
+  .booking-field span {
+    font-size: 13px;
+    color: #999;
+  }
+
+  .booking-divider {
+    width: 1px;
+    height: 30px;
+    background: rgba(0,0,0,0.1);
+  }
+
+  .booking-btn {
+    background: var(--saffron);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 22px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.2s, transform 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .booking-btn:hover { opacity: 0.88; transform: scale(1.02); }
+
+  /* STARS */
+  .press-bar {
+    position: relative;
+    z-index: 2;
+    padding: 14px 48px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+  }
+
+  .stars-icons { color: var(--saffron); letter-spacing: 1px; }
+
+  /* TRUST */
+  .trust {
+    padding: 80px 40px;
+    text-align: center;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .trust-headline {
+    font-size: clamp(26px, 4vw, 44px);
+    font-weight: 800;
+    line-height: 1.2;
+    max-width: 680px;
+    margin: 0 auto 14px;
+    letter-spacing: -0.5px;
+  }
+
+  .trust-headline .hl { color: var(--saffron); }
+
+  .trust-sub {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 auto 60px;
+    line-height: 1.7;
+  }
+
+  /* STATS */
+  .stats {
+    display: flex;
+    justify-content: center;
+    max-width: 680px;
+    margin: 0 auto;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+  }
+
+  .stat {
+    flex: 1;
+    padding: 32px 20px;
+    border-right: 1px solid var(--border2);
+    background: var(--surface);
+    text-align: center;
+  }
+
+  .stat:last-child { border-right: none; }
+
+  .stat-number {
+    font-size: 38px;
+    font-weight: 900;
+    color: var(--saffron);
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* SECTION COMMON */
+  .section {
+    padding: 80px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--saffron);
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-size: clamp(26px, 3.5vw, 42px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+    max-width: 560px;
+    margin-bottom: 52px;
+  }
+
+  /* FEATURES */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+  }
+
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+
+  .feature-card:hover {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+  }
+
+  .feature-icon {
+    width: 42px;
+    height: 42px;
+    background: var(--saffron-light);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-bottom: 18px;
+  }
+
+  .feature-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  /* PROCESS */
+  .process {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 40px;
+  }
+
+  .process-inner { max-width: 1100px; margin: 0 auto; }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    margin-top: 52px;
+  }
+
+  .step-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--saffron);
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+  }
+
+  .step-line {
+    width: 36px;
+    height: 2px;
+    background: var(--saffron);
+    margin-bottom: 18px;
+    opacity: 0.35;
+  }
+
+  .step-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .step-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  /* TESTIMONIALS CAROUSEL */
+  .testimonials {
+    padding: 80px 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .testimonials-header {
+    padding: 0 40px;
+    margin-bottom: 48px;
+  }
+
+  .carousel-track-wrapper {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .carousel-track-wrapper::before,
+  .carousel-track-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 80px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .carousel-track-wrapper::before {
+    left: 0;
+    background: linear-gradient(to right, var(--surface), transparent);
+  }
+
+  .carousel-track-wrapper::after {
+    right: 0;
+    background: linear-gradient(to left, var(--surface), transparent);
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 20px;
+    animation: scroll-left 32s linear infinite;
+    width: max-content;
+  }
+
+  .carousel-track:hover { animation-play-state: paused; }
+
+  @keyframes scroll-left {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .t-card {
+    background: var(--card);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 24px 26px;
+    width: 320px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .t-stars { color: var(--saffron); font-size: 13px; letter-spacing: 2px; }
+
+  .t-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: var(--saffron-light);
+    color: var(--saffron);
+    padding: 3px 10px;
+    border-radius: 50px;
+    display: inline-block;
+    align-self: flex-start;
+  }
+
+  .t-quote {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text2);
+    font-style: italic;
+  }
+
+  .t-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .t-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--saffron-light);
+    color: var(--saffron);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .t-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .t-detail {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 100px 40px;
+    text-align: center;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(232,146,10,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-title {
+    font-size: clamp(28px, 4.5vw, 50px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    max-width: 660px;
+    margin: 0 auto 18px;
+    color: var(--text);
+  }
+
+  .cta-sub {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 380px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--saffron);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 18px 36px;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+
+  .cta-btn:hover { opacity: 0.88; transform: scale(1.02); }
+
+  .cta-fine {
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+  }
+
+  footer .logo { font-size: 15px; }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--text); }
+
+  .footer-copy { font-size: 12px; color: var(--muted); }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    nav ul li:not(:last-child) { display: none; }
+    .hero-content { padding: 0 20px; }
+    .press-bar { padding: 12px 20px 0; }
+    .booking-bar { max-width: 100%; }
+    .trust { padding: 60px 20px; }
+    .stats { flex-direction: column; }
+    .stat { border-right: none; border-bottom: 1px solid var(--border2); }
+    .stat:last-child { border-bottom: none; }
+    .section { padding: 60px 20px; }
+    .process { padding: 60px 20px; }
+    .steps { grid-template-columns: 1fr; }
+    .testimonials-header { padding: 0 20px; }
+    .t-card { width: 280px; }
+    .cta-section { padding: 80px 20px; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .carousel-track { animation: none; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">K<span>U</span>RIE</div>
+  <ul>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#book"><span class="nav-cta">Book a Session</span></a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <video class="hero-video" autoplay muted loop playsinline>
+    <source src="https://www.image2url.com/r2/default/videos/1785597524148-a2704536-6c57-4554-858e-112cfde46ad8.webm" type="video/webm">
+  </video>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">South Delhi · Elder Care Companions</p>
+    <h1 class="hero-title">
+      Apno Ka Khayal,
+      <span class="accent">Apno Ki Tarah.</span>
+    </h1>
+    <p class="hero-sub">Busy at work while your parents need a hospital visit? We send a trained companion — so your family is never alone.</p>
+
+    <div class="booking-bar" id="book">
+      <div class="booking-field">
+        <label>Session</label>
+        <span>Book for tomorrow</span>
+      </div>
+      <div class="booking-divider"></div>
+      <div class="booking-field">
+        <label>Location</label>
+        <span>South Delhi</span>
+      </div>
+      <button class="booking-btn" onclick="window.location.href='#'">
+        Book Now
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="press-bar">
+    <span class="stars-icons">★★★★★</span>
+    <span>Trusted by families across South Delhi</span>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust">
+  <h2 class="trust-headline">
+    You can't always leave work.<br>
+    <span class="hl">We make sure they're never alone.</span>
+  </h2>
+  <p class="trust-sub">A trained Kurie companion handles everything — from your door to the doctor and back. You get live updates the whole way.</p>
+
+  <div class="stats" id="stats-section">
+    <div class="stat">
+      <div class="stat-number" data-target="100" data-suffix="+">0+</div>
+      <div class="stat-label">Verified Companions</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number" data-target="500" data-suffix="+">0+</div>
+      <div class="stat-label">Sessions Completed</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number" data-target="4.9" data-suffix="★" data-decimal="true">0★</div>
+      <div class="stat-label">Family Rating</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <p class="section-label">What We Offer</p>
+  <h2 class="section-title">Everything handled.<br>Nothing to worry about.</h2>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">✓</div>
+      <h3 class="feature-title">Verified Companions</h3>
+      <p class="feature-desc">Background verified, government ID checked, trained for hospital navigation. See their profile, intro video, and ratings before booking.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🚗</div>
+      <h3 class="feature-title">Door-to-Door Service</h3>
+      <p class="feature-desc">Companion arrives at home, helps them get ready, accompanies in the cab, and stays through the entire appointment until they're home safely.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📱</div>
+      <h3 class="feature-title">Real-Time Updates</h3>
+      <p class="feature-desc">Photo checkpoints at every stage — pickup, hospital arrival, post-consultation, and home return. Always in the loop, from anywhere in the world.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📞</div>
+      <h3 class="feature-title">Doctor Patch-Through</h3>
+      <p class="feature-desc">When the companion enters the consultation room, you get called live — so you can speak directly to the doctor from Dubai, Bengaluru, anywhere.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📋</div>
+      <h3 class="feature-title">Medical Summary</h3>
+      <p class="feature-desc">Detailed post-session summary — doctor's instructions, prescriptions, next appointment — sent within 30 minutes of completion.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🛡️</div>
+      <h3 class="feature-title">No Commitment</h3>
+      <p class="feature-desc">No subscription. No monthly fees. Book when you need it, pay per visit. Simple, flexible, always available.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<div class="process" id="how">
+  <div class="process-inner">
+    <p class="section-label">The Process</p>
+    <h2 class="section-title">From booking to safe return — we handle it all.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-line"></div>
+        <h3 class="step-title">Book a Session</h3>
+        <p class="step-desc">Select your date, time, and hospital. Pay ₹199 to confirm. We assign a verified companion within 2 hours.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-line"></div>
+        <h3 class="step-title">Companion Arrives</h3>
+        <p class="step-desc">Your companion reaches home before departure, helps get ready, and checks all medical documents.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-line"></div>
+        <h3 class="step-title">Full Hospital Support</h3>
+        <p class="step-desc">OPD registration, queues, wheelchair support, pharmacy — handled. Doctor call patched to you live.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-line"></div>
+        <h3 class="step-title">Safe Return + Summary</h3>
+        <p class="step-desc">Companion escorts them home. Full medical summary sent within 30 minutes. Done.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS CAROUSEL -->
+<section class="testimonials">
+  <div class="testimonials-header">
+    <p class="section-label">What Families Say</p>
+    <h2 class="section-title">Real families.<br>Real peace of mind.</h2>
+  </div>
+
+  <div class="carousel-track-wrapper">
+    <div class="carousel-track" id="carousel">
+
+      <div class="t-card">
+        <span class="t-tag">NRI · Dubai</span>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"I was 3,000 km away and Kurie patched me into my mother's cardiology consultation live. I heard everything the doctor said. I cried."</p>
+        <div class="t-author">
+          <div class="t-avatar">RS</div>
+          <div>
+            <div class="t-name">Rahul S.</div>
+            <div class="t-detail">Son · Dubai → GK</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="t-card">
+        <span class="t-tag">Working Professional</span>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"Both my wife and I couldn't take the day off. The Kurie companion handled everything. My father-in-law said she was 'just like family.'"</p>
+        <div class="t-author">
+          <div class="t-avatar">PM</div>
+          <div>
+            <div class="t-name">Priya M.</div>
+            <div class="t-detail">Daughter-in-law · Gurugram</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="t-card">
+        <span class="t-tag">NRI · London</span>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"Every hospital visit used to be a week of anxiety. With Kurie I get photos, updates, and a full summary. It's the closest thing to being there myself."</p>
+        <div class="t-author">
+          <div class="t-avatar">AK</div>
+          <div>
+            <div class="t-name">Amit K.</div>
+            <div class="t-detail">Son · London → South Delhi</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="t-card">
+        <span class="t-tag">Repeat Customer</span>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"Same companion every time — she knows my mother's name and her doctor. My mother actually looks forward to seeing her. That's not a service. That's care."</p>
+        <div class="t-author">
+          <div class="t-avatar">NJ</div>
+          <div>
+            <div class="t-name">Neha J.</div>
+            <div class="t-detail">Daughter · Bengaluru → Hauz Khas</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="t-card">
+        <span class="t-tag">First-Time User</span>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"I was skeptical. But seeing the full profile, intro video, and verification before booking made me comfortable. Booking again next week."</p>
+        <div class="t-author">
+          <div class="t-avatar">VT</div>
+          <div>
+            <div class="t-name">Vikram T.</div>
+            <div class="t-detail">Son · Noida → Green Park</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="t-card">
+        <span class="t-tag">NRI · Toronto</span>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"I was in a Toronto coffee shop when my mother's cardiologist explained her condition to me directly. Kurie made me feel like a present child from across the world."</p>
+        <div class="t-author">
+          <div class="t-avatar">SS</div>
+          <div>
+            <div class="t-name">Sunita S.</div>
+            <div class="t-detail">Daughter · Toronto → Vasant Vihar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DUPLICATE for seamless loop -->
+      <div class="t-card">
+        <span class="t-tag">NRI · Dubai</span>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"I was 3,000 km away and Kurie patched me into my mother's cardiology consultation live. I heard everything the doctor said. I cried."</p>
+        <div class="t-author">
+          <div class="t-avatar">RS</div>
+          <div>
+            <div class="t-name">Rahul S.</div>
+            <div class="t-detail">Son · Dubai → GK</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="t-card">
+        <span class="t-tag">Working Professional</span>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"Both my wife and I couldn't take the day off. The Kurie companion handled everything. My father-in-law said she was 'just like family.'"</p>
+        <div class="t-author">
+          <div class="t-avatar">PM</div>
+          <div>
+            <div class="t-name">Priya M.</div>
+            <div class="t-detail">Daughter-in-law · Gurugram</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="t-card">
+        <span class="t-tag">NRI · London</span>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"Every hospital visit used to be a week of anxiety. With Kurie I get photos, updates, and a full summary. It's the closest thing to being there myself."</p>
+        <div class="t-author">
+          <div class="t-avatar">AK</div>
+          <div>
+            <div class="t-name">Amit K.</div>
+            <div class="t-detail">Son · London → South Delhi</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="t-card">
+        <span class="t-tag">Repeat Customer</span>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"Same companion every time — she knows my mother's name and her doctor. My mother actually looks forward to seeing her. That's not a service. That's care."</p>
+        <div class="t-author">
+          <div class="t-avatar">NJ</div>
+          <div>
+            <div class="t-name">Neha J.</div>
+            <div class="t-detail">Daughter · Bengaluru → Hauz Khas</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="t-card">
+        <span class="t-tag">First-Time User</span>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"I was skeptical. But seeing the full profile, intro video, and verification before booking made me comfortable. Booking again next week."</p>
+        <div class="t-author">
+          <div class="t-avatar">VT</div>
+          <div>
+            <div class="t-name">Vikram T.</div>
+            <div class="t-detail">Son · Noida → Green Park</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="t-card">
+        <span class="t-tag">NRI · Toronto</span>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"I was in a Toronto coffee shop when my mother's cardiologist explained her condition to me directly. Kurie made me feel like a present child from across the world."</p>
+        <div class="t-author">
+          <div class="t-avatar">SS</div>
+          <div>
+            <div class="t-name">Sunita S.</div>
+            <div class="t-detail">Daughter · Toronto → Vasant Vihar</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <h2 class="cta-title">Your parents deserve to never miss an appointment.</h2>
+  <p class="cta-sub">Book your first Kurie session today. South Delhi only — for now.</p>
+  <a href="#book" class="cta-btn">
+    Book a Session
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+  <p class="cta-fine">₹2,000 per session · No subscription · South Delhi</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">K<span>U</span>RIE</div>
+  <ul class="footer-links">
+    <li><a href="#">How it works</a></li>
+    <li><a href="#">For companions</a></li>
+    <li><a href="#">Contact</a></li>
+    <li><a href="#">Privacy</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 Kurie. Delhi, India.</p>
+</footer>
+
+<script>
+  // COUNTER ANIMATION
+  function animateCounter(el) {
+    const target = parseFloat(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    const isDecimal = el.dataset.decimal === 'true';
+    const duration = 2000;
+    const start = performance.now();
+    function update(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = eased * target;
+      el.textContent = (isDecimal ? current.toFixed(1) : Math.floor(current)) + suffix;
+      if (progress < 1) requestAnimationFrame(update);
+      else el.textContent = (isDecimal ? target.toFixed(1) : target) + suffix;
+    }
+    requestAnimationFrame(update);
+  }
+
+  let animated = false;
+  const statsEl = document.getElementById('stats-section');
+  new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && !animated) {
+      animated = true;
+      document.querySelectorAll('.stat-number[data-target]').forEach(animateCounter);
+    }
+  }, { threshold: 0.3 }).observe(statsEl);
+</script>
+
+</body>
+</html>
